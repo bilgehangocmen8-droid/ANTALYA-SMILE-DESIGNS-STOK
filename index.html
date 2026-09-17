@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antalya Smile Design - Stok Yönetim Sistemi</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-tooth"></i>
+                <div class="logo-text">
+                    <span class="logo-title">Antalya</span>
+                    <span class="logo-subtitle">Smile Design</span>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item active" data-page="dashboard">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Ana Sayfa</span>
+                </a>
+            </li>
+            <li class="nav-item" data-page="stock">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-boxes-stacked"></i>
+                    <span>Stok Yönetimi</span>
+                </a>
+            </li>
+            <li class="nav-item" data-page="usage">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-clock-rotate-left"></i>
+                    <span>Kullanım Geçmişi</span>
+                </a>
+            </li>
+            <li class="nav-item" data-page="categories">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-tags"></i>
+                    <span>Kategoriler</span>
+                </a>
+            </li>
+            <li class="nav-item" data-page="reports">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-file-lines"></i>
+                    <span>Raporlar</span>
+                </a>
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user-doctor"></i>
+                </div>
+                <div class="user-details">
+                    <span class="user-name">Admin</span>
+                    <span class="user-role">Yönetici</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <div class="page-title-section">
+                <h1 class="page-title" id="pageTitle">Ana Sayfa</h1>
+                <p class="page-subtitle" id="pageSubtitle">Stok durumunuza genel bakış</p>
+            </div>
+            <div class="top-bar-actions">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Ara..." id="globalSearch">
+                </div>
+                <div class="datetime-display">
+                    <i class="fas fa-calendar-days"></i>
+                    <span id="currentDateTime"></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Page -->
+        <div class="page-content" id="page-dashboard">
+            <div class="stats-grid">
+                <div class="stat-card stat-primary">
+                    <div class="stat-icon"><i class="fas fa-cubes"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="totalStock">0</span>
+                        <span class="stat-label">Toplam Stok</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-success">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="availableStock">0</span>
+                        <span class="stat-label">Mevcut Ürün</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-warning">
+                    <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="lowStock">0</span>
+                        <span class="stat-label">Azalan Stok</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-danger">
+                    <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="outOfStock">0</span>
+                        <span class="stat-label">Tükenen Ürün</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-clock"></i> Son Kullanılan Bloklar</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="recent-list" id="recentUsageList">
+                            <p class="empty-message">Henüz kullanım kaydı yok</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-arrow-down"></i> Azalan Stoklar</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="recent-list" id="lowStockList">
+                            <p class="empty-message">Tüm stoklar yeterli seviyede</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-chart-bar"></i> Kategori Bazlı Stok Dağılımı</h3>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" id="categoryChart"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stock Management Page -->
+        <div class="page-content hidden" id="page-stock">
+            <div class="page-actions">
+                <button class="btn btn-primary" onclick="openAddStockModal()">
+                    <i class="fas fa-plus"></i> Yeni Ürün Ekle
+                </button>
+                <button class="btn btn-success" onclick="openAddBulkModal()">
+                    <i class="fas fa-boxes-stacked"></i> Toplu Stok Girişi
+                </button>
+                <div class="filter-group">
+                    <select id="stockCategoryFilter" onchange="filterStock()">
+                        <option value="">Tüm Kategoriler</option>
+                    </select>
+                    <select id="stockStatusFilter" onchange="filterStock()">
+                        <option value="">Tüm Durumlar</option>
+                        <option value="available">Mevcut</option>
+                        <option value="low">Azalan</option>
+                        <option value="out">Tükenen</option>
+                    </select>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body no-padding">
+                    <div class="table-responsive">
+                        <table class="data-table" id="stockTable">
+                            <thead>
+                                <tr>
+                                    <th>Ürün Kodu</th>
+                                    <th>Ürün Adı</th>
+                                    <th>Kategori</th>
+                                    <th>Marka</th>
+                                    <th>Renk/Ton</th>
+                                    <th>Boyut</th>
+                                    <th>Miktar</th>
+                                    <th>Min. Stok</th>
+                                    <th>Durum</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stockTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Usage History Page -->
+        <div class="page-content hidden" id="page-usage">
+            <div class="page-actions">
+                <div class="filter-group">
+                    <div class="date-filter">
+                        <label><i class="fas fa-calendar"></i> Başlangıç:</label>
+                        <input type="date" id="usageDateStart">
+                    </div>
+                    <div class="date-filter">
+                        <label><i class="fas fa-calendar"></i> Bitiş:</label>
+                        <input type="date" id="usageDateEnd">
+                    </div>
+                    <select id="usageCategoryFilter">
+                        <option value="">Tüm Kategoriler</option>
+                    </select>
+                    <input type="text" id="usageSearchInput" placeholder="Hasta adı veya ürün ara..." class="search-input">
+                    <button class="btn btn-primary" onclick="filterUsageHistory()">
+                        <i class="fas fa-filter"></i> Filtrele
+                    </button>
+                    <button class="btn btn-outline" onclick="clearUsageFilters()">
+                        <i class="fas fa-times"></i> Temizle
+                    </button>
+                </div>
+            </div>
+            <div class="page-actions">
+                <button class="btn btn-primary" onclick="openUseBlockModal()">
+                    <i class="fas fa-cube"></i> Blok Kullan
+                </button>
+                <button class="btn btn-success" onclick="exportUsageHistory()">
+                    <i class="fas fa-file-export"></i> Excel'e Aktar
+                </button>
+            </div>
+
+            <!-- Usage Stats -->
+            <div class="stats-grid stats-grid-3">
+                <div class="stat-card stat-primary">
+                    <div class="stat-icon"><i class="fas fa-cubes"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="totalUsedBlocks">0</span>
+                        <span class="stat-label">Toplam Kullanılan</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-success">
+                    <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="todayUsedBlocks">0</span>
+                        <span class="stat-label">Bugün Kullanılan</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-warning">
+                    <div class="stat-icon"><i class="fas fa-calendar-week"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="weekUsedBlocks">0</span>
+                        <span class="stat-label">Bu Hafta Kullanılan</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-clock-rotate-left"></i> Kullanım Geçmişi</h3>
+                </div>
+                <div class="card-body no-padding">
+                    <div class="table-responsive">
+                        <table class="data-table" id="usageTable">
+                            <thead>
+                                <tr>
+                                    <th>Tarih</th>
+                                    <th>Saat</th>
+                                    <th>Ürün Adı</th>
+                                    <th>Kategori</th>
+                                    <th>Renk/Ton</th>
+                                    <th>Boyut</th>
+                                    <th>Miktar</th>
+                                    <th>Hasta Adı</th>
+                                    <th>Doktor</th>
+                                    <th>Notlar</th>
+                                    <th>İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usageTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories Page -->
+        <div class="page-content hidden" id="page-categories">
+            <div class="page-actions">
+                <button class="btn btn-primary" onclick="openAddCategoryModal()">
+                    <i class="fas fa-plus"></i> Yeni Kategori Ekle
+                </button>
+            </div>
+            <div class="categories-grid" id="categoriesGrid">
+            </div>
+        </div>
+
+        <!-- Reports Page -->
+        <div class="page-content hidden" id="page-reports">
+            <div class="reports-grid">
+                <div class="card report-card" onclick="generateStockReport()">
+                    <div class="report-icon"><i class="fas fa-warehouse"></i></div>
+                    <h3>Stok Raporu</h3>
+                    <p>Mevcut stok durumunun detaylı raporu</p>
+                </div>
+                <div class="card report-card" onclick="generateUsageReport()">
+                    <div class="report-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>Kullanım Raporu</h3>
+                    <p>Blok kullanım istatistikleri</p>
+                </div>
+                <div class="card report-card" onclick="generateLowStockReport()">
+                    <div class="report-icon"><i class="fas fa-exclamation-circle"></i></div>
+                    <h3>Azalan Stok Raporu</h3>
+                    <p>Minimum seviyenin altındaki ürünler</p>
+                </div>
+                <div class="card report-card" onclick="generateMonthlyReport()">
+                    <div class="report-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <h3>Aylık Rapor</h3>
+                    <p>Aylık kullanım ve stok analizi</p>
+                </div>
+            </div>
+            <div class="card hidden" id="reportOutput">
+                <div class="card-header">
+                    <h3 id="reportTitle"></h3>
+                    <button class="btn btn-sm btn-outline" onclick="printReport()">
+                        <i class="fas fa-print"></i> Yazdır
+                    </button>
+                </div>
+                <div class="card-body" id="reportContent">
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Stock Modal -->
+    <div class="modal-overlay hidden" id="addStockModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="stockModalTitle"><i class="fas fa-plus-circle"></i> Yeni Ürün Ekle</h2>
+                <button class="modal-close" onclick="closeModal('addStockModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="stockForm" onsubmit="saveStock(event)">
+                    <input type="hidden" id="editStockId">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Ürün Kodu</label>
+                            <input type="text" id="stockCode" required placeholder="Örn: ZR-001">
+                        </div>
+                        <div class="form-group">
+                            <label>Ürün Adı</label>
+                            <input type="text" id="stockName" required placeholder="Örn: Zirkon Blok">
+                        </div>
+                        <div class="form-group">
+                            <label>Kategori</label>
+                            <select id="stockCategory" required>
+                                <option value="">Seçiniz</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Marka</label>
+                            <input type="text" id="stockBrand" placeholder="Örn: Ivoclar">
+                        </div>
+                        <div class="form-group">
+                            <label>Renk/Ton</label>
+                            <input type="text" id="stockColor" placeholder="Örn: A2, BL1">
+                        </div>
+                        <div class="form-group">
+                            <label>Boyut</label>
+                            <input type="text" id="stockSize" placeholder="Örn: 98x14mm">
+                        </div>
+                        <div class="form-group">
+                            <label>Miktar</label>
+                            <input type="number" id="stockQuantity" required min="0" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Minimum Stok</label>
+                            <input type="number" id="stockMinQuantity" required min="0" value="5">
+                        </div>
+                        <div class="form-group">
+                            <label>Birim Fiyat (₺)</label>
+                            <input type="number" id="stockPrice" min="0" step="0.01" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label>Tedarikçi</label>
+                            <input type="text" id="stockSupplier" placeholder="Tedarikçi adı">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Notlar</label>
+                        <textarea id="stockNotes" placeholder="Ek notlar..."></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" onclick="closeModal('addStockModal')">İptal</button>
+                        <button type="submit" class="btn btn-primary">Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Use Block Modal -->
+    <div class="modal-overlay hidden" id="useBlockModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-cube"></i> Blok Kullan</h2>
+                <button class="modal-close" onclick="closeModal('useBlockModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="useBlockForm" onsubmit="saveBlockUsage(event)">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Ürün Seçin</label>
+                            <select id="useBlockProduct" required onchange="updateBlockDetails()">
+                                <option value="">Seçiniz</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Kullanılan Miktar</label>
+                            <input type="number" id="useBlockQuantity" required min="1" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label>Tarih</label>
+                            <input type="date" id="useBlockDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Saat</label>
+                            <input type="time" id="useBlockTime" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Hasta Adı</label>
+                            <input type="text" id="useBlockPatient" placeholder="Hasta adı soyadı">
+                        </div>
+                        <div class="form-group">
+                            <label>Doktor</label>
+                            <input type="text" id="useBlockDoctor" placeholder="Doktor adı">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>İşlem Notu</label>
+                        <textarea id="useBlockNotes" placeholder="İşlem detayları..."></textarea>
+                    </div>
+                    <div class="block-info hidden" id="blockInfo">
+                        <div class="info-row">
+                            <span>Mevcut Stok:</span>
+                            <span id="blockCurrentStock">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span>Renk/Ton:</span>
+                            <span id="blockColor">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span>Boyut:</span>
+                            <span id="blockSize">-</span>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" onclick="closeModal('useBlockModal')">İptal</button>
+                        <button type="submit" class="btn btn-primary">Kullanımı Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Category Modal -->
+    <div class="modal-overlay hidden" id="addCategoryModal">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h2><i class="fas fa-tag"></i> Yeni Kategori</h2>
+                <button class="modal-close" onclick="closeModal('addCategoryModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="categoryForm" onsubmit="saveCategory(event)">
+                    <input type="hidden" id="editCategoryId">
+                    <div class="form-group">
+                        <label>Kategori Adı</label>
+                        <input type="text" id="categoryName" required placeholder="Örn: Zirkon Bloklar">
+                    </div>
+                    <div class="form-group">
+                        <label>Açıklama</label>
+                        <textarea id="categoryDescription" placeholder="Kategori açıklaması..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>İkon</label>
+                        <select id="categoryIcon">
+                            <option value="fa-cube">🧊 Blok</option>
+                            <option value="fa-tooth">🦷 Diş</option>
+                            <option value="fa-syringe">💉 Enjektör</option>
+                            <option value="fa-pills">💊 İlaç</option>
+                            <option value="fa-toolbox">🧰 Alet</option>
+                            <option value="fa-flask">🧪 Kimyasal</option>
+                            <option value="fa-kit-medical">🏥 Medikal</option>
+                            <option value="fa-screwdriver-wrench">🔧 Yedek Parça</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" onclick="closeModal('addCategoryModal')">İptal</button>
+                        <button type="submit" class="btn btn-primary">Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bulk Stock Entry Modal -->
+    <div class="modal-overlay hidden" id="addBulkModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-boxes-stacked"></i> Toplu Stok Girişi</h2>
+                <button class="modal-close" onclick="closeModal('addBulkModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="bulkForm" onsubmit="saveBulkStock(event)">
+                    <div class="form-group">
+                        <label>Ürün Seçin</label>
+                        <select id="bulkProduct" required>
+                            <option value="">Seçiniz</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Eklenecek Miktar</label>
+                        <input type="number" id="bulkQuantity" required min="1" value="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Notlar</label>
+                        <textarea id="bulkNotes" placeholder="Tedarik notları..."></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" onclick="closeModal('addBulkModal')">İptal</button>
+                        <button type="submit" class="btn btn-primary">Stok Ekle</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Confirm Dialog -->
+    <div class="modal-overlay hidden" id="confirmDialog">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h2><i class="fas fa-question-circle"></i> Onay</h2>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage"></p>
+                <div class="form-actions">
+                    <button class="btn btn-outline" onclick="closeModal('confirmDialog')">İptal</button>
+                    <button class="btn btn-danger" id="confirmBtn">Sil</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
