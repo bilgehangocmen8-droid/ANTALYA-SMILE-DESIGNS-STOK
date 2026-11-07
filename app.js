@@ -906,34 +906,13 @@ function handleChangePassword(e) {
     showToast('Şifre başarıyla güncellendi! Tüm cihazlarda geçerli olacaktır.', 'success');
 }
 
-function togglePasswordVisibility(inputId, btn) {
-    var input = document.getElementById(inputId);
-    if (!input) return;
-    var icon = btn.querySelector('i');
-    if (input.type === 'password') {
-        input.type = 'text';
-        if (icon) icon.className = 'fas fa-eye-slash';
-    } else {
-        input.type = 'password';
-        if (icon) icon.className = 'fas fa-eye';
-    }
-}
-
 // ===== Form handler fix =====
 function setupForms() {
     document.getElementById('stockForm').onsubmit = saveStockForm;
-    var loginInput = document.getElementById('loginPassword');
-    if (loginInput) {
-        loginInput.addEventListener('input', function() {
-            var errEl = document.getElementById('loginError');
-            if (errEl) errEl.classList.add('hidden');
-        });
-    }
 }
 
 // ===== APP START =====
 document.addEventListener('DOMContentLoaded', function() {
-    checkAuth();
     initializeData();
     setupSidebar();
     setupGlobalSearch();

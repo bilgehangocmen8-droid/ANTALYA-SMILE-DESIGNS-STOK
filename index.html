@@ -56,18 +56,15 @@
             </li>
         </ul>
         <div class="sidebar-footer">
-            <div class="user-info" onclick="openModal('changePasswordModal')" title="Şifre Değiştir" style="cursor: pointer;">
+            <div class="user-info">
                 <div class="user-avatar">
                     <i class="fas fa-user-doctor"></i>
                 </div>
                 <div class="user-details">
                     <span class="user-name">Admin</span>
-                    <span class="user-role" style="display:flex; align-items:center; gap:4px;"><i class="fas fa-key" style="font-size:10px;"></i> Şifre Değiştir</span>
+                    <span class="user-role">Yönetici</span>
                 </div>
             </div>
-            <button class="logout-btn" onclick="logout()" title="Çıkış Yap">
-                <i class="fas fa-right-from-bracket"></i>
-            </button>
         </div>
     </nav>
 
@@ -558,76 +555,6 @@
                     <button class="btn btn-outline" onclick="closeModal('confirmDialog')">İptal</button>
                     <button class="btn btn-danger" id="confirmBtn">Sil</button>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Change Password Modal -->
-    <div class="modal-overlay hidden" id="changePasswordModal">
-        <div class="modal modal-sm">
-            <div class="modal-header">
-                <h2><i class="fas fa-key"></i> Şifre Değiştir</h2>
-                <button class="modal-close" onclick="closeModal('changePasswordModal')">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="changePasswordForm" onsubmit="handleChangePassword(event)">
-                    <div class="form-group">
-                        <label>Mevcut Şifre</label>
-                        <input type="password" id="currentPasswordInput" required placeholder="Mevcut şifre">
-                    </div>
-                    <div class="form-group">
-                        <label>Yeni Şifre</label>
-                        <input type="password" id="newPasswordInput" required placeholder="Yeni şifre (en az 4 karakter)">
-                    </div>
-                    <div class="form-group">
-                        <label>Yeni Şifre (Tekrar)</label>
-                        <input type="password" id="confirmNewPasswordInput" required placeholder="Yeni şifreyi tekrar girin">
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-outline" onclick="closeModal('changePasswordModal')">İptal</button>
-                        <button type="submit" class="btn btn-primary">Kaydet</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Login Screen -->
-    <div id="loginScreen" class="login-overlay">
-        <div class="login-card">
-            <div class="login-header">
-                <div class="login-logo">
-                    <i class="fas fa-tooth"></i>
-                </div>
-                <h2>Antalya Smile Design</h2>
-                <p>Stok Yönetim Sistemi - Yetkili Girişi</p>
-            </div>
-            <form id="loginForm" onsubmit="handleLogin(event); return false;">
-                <div class="login-input-group">
-                    <label for="loginPassword"><i class="fas fa-lock"></i> Erişim Şifresi</label>
-                    <div class="password-wrapper">
-                        <input type="password" id="loginPassword" placeholder="Şifrenizi girin..." required autofocus autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false">
-                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('loginPassword', this)">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="login-options">
-                    <label class="remember-me">
-                        <input type="checkbox" id="rememberMe" checked>
-                        <span>Bu cihazda beni hatırla</span>
-                    </label>
-                </div>
-                <div id="loginError" class="login-error hidden">
-                    <i class="fas fa-circle-exclamation"></i>
-                    <span>Hatalı şifre! Lütfen tekrar deneyin.</span>
-                </div>
-                <button type="submit" class="btn btn-primary login-btn">
-                    <i class="fas fa-right-to-bracket"></i> Giriş Yap
-                </button>
-            </form>
-            <div class="login-footer">
-                <span>Varsayılan şifre: <strong>asd07</strong></span>
             </div>
         </div>
     </div>
