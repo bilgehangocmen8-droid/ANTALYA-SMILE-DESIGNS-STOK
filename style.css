@@ -1259,6 +1259,15 @@ select:focus, input[type="date"]:focus, input[type="time"]:focus {
     font-size: 14px;
 }
 
+/* ===== Global Hidden Helper ===== */
+.hidden {
+    display: none !important;
+}
+
+.login-overlay.hidden {
+    display: none !important;
+}
+
 /* ===== Highlight animation ===== */
 .highlight-row {
     animation: highlightFade 2s ease;

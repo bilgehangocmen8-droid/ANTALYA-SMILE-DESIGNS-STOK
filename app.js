@@ -819,8 +819,10 @@ function checkAuth() {
     if (!loginScreen) return;
     if (isLoggedIn()) {
         loginScreen.classList.add('hidden');
+        loginScreen.style.display = 'none';
     } else {
         loginScreen.classList.remove('hidden');
+        loginScreen.style.display = 'flex';
         var passInput = document.getElementById('loginPassword');
         if (passInput) {
             passInput.value = '';
@@ -830,7 +832,10 @@ function checkAuth() {
 }
 
 function handleLogin(e) {
-    if (e) e.preventDefault();
+    if (e) {
+        if (typeof e.preventDefault === 'function') e.preventDefault();
+        if (typeof e.stopPropagation === 'function') e.stopPropagation();
+    }
     var inputEl = document.getElementById('loginPassword');
     var inputPass = (inputEl ? inputEl.value : '').trim();
     var currentPass = (getPassword() || DEFAULT_PASSWORD).trim();
@@ -851,7 +856,11 @@ function handleLogin(e) {
             sessionStorage.setItem('asd_logged_in', 'true');
         }
         if (errEl) errEl.classList.add('hidden');
-        document.getElementById('loginScreen').classList.add('hidden');
+        var loginScreen = document.getElementById('loginScreen');
+        if (loginScreen) {
+            loginScreen.classList.add('hidden');
+            loginScreen.style.display = 'none';
+        }
         showToast('Giriş başarılı. İyi çalışmalar!', 'success');
     } else {
         if (errEl) {
@@ -862,6 +871,7 @@ function handleLogin(e) {
             inputEl.focus();
         }
     }
+    return false;
 }
 
 function logout() {
