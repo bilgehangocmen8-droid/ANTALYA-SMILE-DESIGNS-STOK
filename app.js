@@ -14,8 +14,11 @@ const FIREBASE_CONFIG = {
 const DB_KEYS = {
     STOCK: 'asd_stock',
     CATEGORIES: 'asd_categories',
-    USAGE: 'asd_usage'
+    USAGE: 'asd_usage',
+    PASSWORD: 'asd_password'
 };
+
+const DEFAULT_PASSWORD = 'asd07';
 
 let firebaseDB = null;
 let isFirebaseConnected = false;
@@ -173,6 +176,14 @@ function initFirebase() {
             }
         });
 
+        // Realtime listener for password changes
+        firebaseDB.ref('system/password').on('value', function(snap) {
+            var pass = snap.val();
+            if (pass) {
+                localStorage.setItem(DB_KEYS.PASSWORD, pass);
+            }
+        });
+
     } catch (e) {
         console.error('Firebase bağlantı hatası:', e);
         updateSyncStatus('offline');
@@ -206,6 +217,15 @@ function doFirstSync() {
         firebaseDB.ref('stock').set(mergedStock);
         firebaseDB.ref('categories').set(mergedCats);
         firebaseDB.ref('usage').set(mergedUsage);
+
+        // Sync password with cloud
+        var cloudPass = cloud.system && cloud.system.password ? cloud.system.password : null;
+        var localPass = getPassword();
+        if (cloudPass) {
+            localStorage.setItem(DB_KEYS.PASSWORD, cloudPass);
+        } else {
+            firebaseDB.ref('system/password').set(localPass);
+        }
 
         // Refresh UI
         try {
@@ -778,6 +798,108 @@ function setupSidebar() {
     });
 }
 
+// ===== Password & Authentication =====
+function getPassword() {
+    return localStorage.getItem(DB_KEYS.PASSWORD) || DEFAULT_PASSWORD;
+}
+
+function setPassword(newPass) {
+    localStorage.setItem(DB_KEYS.PASSWORD, newPass);
+    if (isFirebaseConnected && firebaseDB) {
+        firebaseDB.ref('system/password').set(newPass);
+    }
+}
+
+function isLoggedIn() {
+    return localStorage.getItem('asd_logged_in') === 'true' || sessionStorage.getItem('asd_logged_in') === 'true';
+}
+
+function checkAuth() {
+    var loginScreen = document.getElementById('loginScreen');
+    if (!loginScreen) return;
+    if (isLoggedIn()) {
+        loginScreen.classList.add('hidden');
+    } else {
+        loginScreen.classList.remove('hidden');
+        var passInput = document.getElementById('loginPassword');
+        if (passInput) {
+            passInput.value = '';
+            setTimeout(function() { passInput.focus(); }, 150);
+        }
+    }
+}
+
+function handleLogin(e) {
+    if (e) e.preventDefault();
+    var inputPass = document.getElementById('loginPassword').value;
+    var currentPass = getPassword();
+    var errEl = document.getElementById('loginError');
+
+    if (inputPass === currentPass) {
+        var remember = document.getElementById('rememberMe').checked;
+        if (remember) {
+            localStorage.setItem('asd_logged_in', 'true');
+        } else {
+            sessionStorage.setItem('asd_logged_in', 'true');
+        }
+        if (errEl) errEl.classList.add('hidden');
+        document.getElementById('loginScreen').classList.add('hidden');
+        showToast('Giriş başarılı. İyi çalışmalar!', 'success');
+    } else {
+        if (errEl) {
+            errEl.classList.remove('hidden');
+        }
+        var passInput = document.getElementById('loginPassword');
+        passInput.value = '';
+        passInput.focus();
+    }
+}
+
+function logout() {
+    localStorage.removeItem('asd_logged_in');
+    sessionStorage.removeItem('asd_logged_in');
+    checkAuth();
+    showToast('Güvenli çıkış yapıldı.', 'info');
+}
+
+function handleChangePassword(e) {
+    if (e) e.preventDefault();
+    var curr = document.getElementById('currentPasswordInput').value;
+    var newP = document.getElementById('newPasswordInput').value;
+    var conf = document.getElementById('confirmNewPasswordInput').value;
+
+    if (curr !== getPassword()) {
+        showToast('Mevcut şifre hatalı!', 'error');
+        return;
+    }
+    if (newP.length < 4) {
+        showToast('Yeni şifre en az 4 karakter olmalıdır!', 'error');
+        return;
+    }
+    if (newP !== conf) {
+        showToast('Yeni şifreler birbiriyle eşleşmiyor!', 'error');
+        return;
+    }
+
+    setPassword(newP);
+    closeModal('changePasswordModal');
+    document.getElementById('changePasswordForm').reset();
+    showToast('Şifre başarıyla güncellendi! Tüm cihazlarda geçerli olacaktır.', 'success');
+}
+
+function togglePasswordVisibility(inputId, btn) {
+    var input = document.getElementById(inputId);
+    if (!input) return;
+    var icon = btn.querySelector('i');
+    if (input.type === 'password') {
+        input.type = 'text';
+        if (icon) icon.className = 'fas fa-eye-slash';
+    } else {
+        input.type = 'password';
+        if (icon) icon.className = 'fas fa-eye';
+    }
+}
+
 // ===== Form handler fix =====
 function setupForms() {
     document.getElementById('stockForm').onsubmit = saveStockForm;
@@ -785,6 +907,7 @@ function setupForms() {
 
 // ===== APP START =====
 document.addEventListener('DOMContentLoaded', function() {
+    checkAuth();
     initializeData();
     setupSidebar();
     setupGlobalSearch();
