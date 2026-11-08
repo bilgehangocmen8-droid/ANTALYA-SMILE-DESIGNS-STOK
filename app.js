@@ -36,31 +36,13 @@ const DEFAULT_CATEGORIES = [
     { id: 'cat-8', name: 'Implant Malzemeleri', description: 'İmplant ve üst yapı parçaları', icon: 'fa-tooth' }
 ];
 
-const DEFAULT_STOCK = [
-    { id: 'stk-1', code: 'ZR-001', name: 'Zirkon Blok Multilayer', category: 'cat-1', brand: 'Ivoclar', color: 'A2', size: '98x14mm', quantity: 12, minQuantity: 5, price: 850, supplier: 'DentSupply', notes: 'Yüksek translüsensi' },
-    { id: 'stk-2', code: 'ZR-002', name: 'Zirkon Blok Multilayer', category: 'cat-1', brand: 'Ivoclar', color: 'A3', size: '98x14mm', quantity: 8, minQuantity: 5, price: 850, supplier: 'DentSupply', notes: '' },
-    { id: 'stk-3', code: 'ZR-003', name: 'Zirkon Blok Multilayer', category: 'cat-1', brand: 'Ivoclar', color: 'B1', size: '98x14mm', quantity: 3, minQuantity: 5, price: 850, supplier: 'DentSupply', notes: 'Stok azalıyor' },
-    { id: 'stk-4', code: 'ZR-004', name: 'Zirkon Blok HT', category: 'cat-1', brand: 'Katana', color: 'A1', size: '98x18mm', quantity: 6, minQuantity: 3, price: 920, supplier: 'Kuraray', notes: '' },
-    { id: 'stk-5', code: 'EM-001', name: 'IPS e.max CAD', category: 'cat-2', brand: 'Ivoclar', color: 'HT A2', size: 'C14', quantity: 15, minQuantity: 10, price: 320, supplier: 'DentSupply', notes: '' },
-    { id: 'stk-6', code: 'EM-002', name: 'IPS e.max CAD', category: 'cat-2', brand: 'Ivoclar', color: 'LT BL2', size: 'C14', quantity: 4, minQuantity: 5, price: 340, supplier: 'DentSupply', notes: '' },
-    { id: 'stk-7', code: 'PM-001', name: 'PMMA Geçici Blok', category: 'cat-3', brand: 'Yamahachi', color: 'A2', size: '98x20mm', quantity: 10, minQuantity: 5, price: 180, supplier: 'YamahachiTR', notes: '' },
-    { id: 'stk-8', code: 'PM-002', name: 'PMMA Geçici Blok', category: 'cat-3', brand: 'Yamahachi', color: 'A3', size: '98x20mm', quantity: 0, minQuantity: 5, price: 180, supplier: 'YamahachiTR', notes: 'Yeniden sipariş verilmeli' },
-    { id: 'stk-9', code: 'FR-001', name: 'Elmas Freze Ucu', category: 'cat-6', brand: 'VHF', color: '-', size: '2.5mm', quantity: 20, minQuantity: 10, price: 450, supplier: 'VHF Türkiye', notes: '' },
-    { id: 'stk-10', code: 'FR-002', name: 'Karbür Freze Ucu', category: 'cat-6', brand: 'VHF', color: '-', size: '1.0mm', quantity: 2, minQuantity: 5, price: 380, supplier: 'VHF Türkiye', notes: 'Acil sipariş' },
-];
+// Artık boş başlıyor - yeni cihazlar deneme stoğu eklemeyecek
+const DEFAULT_STOCK = [];
+const DEFAULT_USAGE = [];
 
-const DEFAULT_USAGE = [
-    { id: 'use-1', stockId: 'stk-1', date: '2026-09-17', time: '09:30', quantity: 1, patient: 'Ahmet Yılmaz', doctor: 'Dr. Mehmet', notes: 'Üst çene köprü' },
-    { id: 'use-2', stockId: 'stk-5', date: '2026-09-17', time: '10:15', quantity: 2, patient: 'Fatma Demir', doctor: 'Dr. Ayşe', notes: 'Veneer' },
-    { id: 'use-3', stockId: 'stk-2', date: '2026-09-16', time: '14:00', quantity: 1, patient: 'Ali Kaya', doctor: 'Dr. Mehmet', notes: 'Tek diş kron' },
-    { id: 'use-4', stockId: 'stk-7', date: '2026-09-16', time: '11:30', quantity: 1, patient: 'Zeynep Çelik', doctor: 'Dr. Ayşe', notes: 'Geçici köprü' },
-    { id: 'use-5', stockId: 'stk-9', date: '2026-09-15', time: '16:45', quantity: 2, patient: '-', doctor: 'Teknisyen', notes: 'Rutin değişim' },
-    { id: 'use-6', stockId: 'stk-4', date: '2026-09-15', time: '09:00', quantity: 1, patient: 'Mustafa Arslan', doctor: 'Dr. Mehmet', notes: 'İmplant üstü kron' },
-    { id: 'use-7', stockId: 'stk-1', date: '2026-09-14', time: '13:20', quantity: 1, patient: 'Elif Şahin', doctor: 'Dr. Ayşe', notes: '3 üyeli köprü' },
-    { id: 'use-8', stockId: 'stk-5', date: '2026-09-14', time: '10:00', quantity: 3, patient: 'Hasan Öztürk', doctor: 'Dr. Mehmet', notes: 'Ön grup veneer' },
-    { id: 'use-9', stockId: 'stk-3', date: '2026-09-13', time: '15:30', quantity: 1, patient: 'Ayşe Korkmaz', doctor: 'Dr. Ayşe', notes: 'Kron restorasyonu' },
-    { id: 'use-10', stockId: 'stk-6', date: '2026-09-12', time: '11:00', quantity: 1, patient: 'Murat Aksoy', doctor: 'Dr. Mehmet', notes: 'İnley restorasyon' },
-];
+// Eski deneme verilerinin otomatik temizlenmesi için ID listesi
+const DUMMY_STOCK_IDS = ['stk-1', 'stk-2', 'stk-3', 'stk-4', 'stk-5', 'stk-6', 'stk-7', 'stk-8', 'stk-9', 'stk-10'];
+const DUMMY_USAGE_IDS = ['use-1', 'use-2', 'use-3', 'use-4', 'use-5', 'use-6', 'use-7', 'use-8', 'use-9', 'use-10'];
 
 // ===== Helpers =====
 function generateId(prefix) {
@@ -190,21 +172,40 @@ function initFirebase() {
     }
 }
 
+// Dummy demo verilerini yerelden temizleme
+function cleanDummyData() {
+    var stock = getLocalData(DB_KEYS.STOCK) || [];
+    var cleanedStock = stock.filter(function(s) {
+        return DUMMY_STOCK_IDS.indexOf(s.id) === -1;
+    });
+    if (cleanedStock.length !== stock.length) {
+        setLocalData(DB_KEYS.STOCK, cleanedStock);
+    }
+
+    var usage = getLocalData(DB_KEYS.USAGE) || [];
+    var cleanedUsage = usage.filter(function(u) {
+        return DUMMY_USAGE_IDS.indexOf(u.id) === -1;
+    });
+    if (cleanedUsage.length !== usage.length) {
+        setLocalData(DB_KEYS.USAGE, cleanedUsage);
+    }
+}
+
 // First sync: merge local data with cloud, upload the merged result
 function doFirstSync() {
     updateSyncStatus('syncing');
-    var localStock = getLocalData(DB_KEYS.STOCK) || [];
+    var localStock = (getLocalData(DB_KEYS.STOCK) || []).filter(function(s) { return DUMMY_STOCK_IDS.indexOf(s.id) === -1; });
     var localCats = getLocalData(DB_KEYS.CATEGORIES) || [];
-    var localUsage = getLocalData(DB_KEYS.USAGE) || [];
+    var localUsage = (getLocalData(DB_KEYS.USAGE) || []).filter(function(u) { return DUMMY_USAGE_IDS.indexOf(u.id) === -1; });
 
     // Read cloud data once, merge, then write back
     firebaseDB.ref('/').once('value', function(snap) {
         var cloud = snap.val() || {};
-        var cloudStock = (cloud.stock && Array.isArray(cloud.stock)) ? cloud.stock : [];
+        var cloudStock = (cloud.stock && Array.isArray(cloud.stock)) ? cloud.stock.filter(function(s) { return DUMMY_STOCK_IDS.indexOf(s.id) === -1; }) : [];
         var cloudCats = (cloud.categories && Array.isArray(cloud.categories)) ? cloud.categories : [];
-        var cloudUsage = (cloud.usage && Array.isArray(cloud.usage)) ? cloud.usage : [];
+        var cloudUsage = (cloud.usage && Array.isArray(cloud.usage)) ? cloud.usage.filter(function(u) { return DUMMY_USAGE_IDS.indexOf(u.id) === -1; }) : [];
 
-        // Merge: keep ALL data from both sides
+        // Merge: keep ALL genuine data from both sides
         var mergedStock = mergeArraysById(localStock, cloudStock);
         var mergedCats = mergeArraysById(localCats, cloudCats);
         var mergedUsage = mergeArraysById(localUsage, cloudUsage);
@@ -242,7 +243,7 @@ function doFirstSync() {
         var cloudCount = cloudStock.length + cloudUsage.length;
         var mergedCount = mergedStock.length + mergedUsage.length;
         if (cloudCount > 0 && localCount > 0) {
-            showToast('Veriler birleştirildi! Hiçbir kayıt kaybolmadı. (' + mergedCount + ' kayıt)', 'success');
+            showToast('Veriler eşitlendi! (' + mergedCount + ' kayıt)', 'success');
         } else if (localCount > 0) {
             showToast('Yerel veriler buluta yüklendi!', 'success');
         } else if (cloudCount > 0) {
@@ -254,8 +255,11 @@ function doFirstSync() {
 // ===== Initialize =====
 function initializeData() {
     if (!getLocalData(DB_KEYS.CATEGORIES)) setLocalData(DB_KEYS.CATEGORIES, DEFAULT_CATEGORIES);
-    if (!getLocalData(DB_KEYS.STOCK)) setLocalData(DB_KEYS.STOCK, DEFAULT_STOCK);
-    if (!getLocalData(DB_KEYS.USAGE)) setLocalData(DB_KEYS.USAGE, DEFAULT_USAGE);
+    if (getLocalData(DB_KEYS.STOCK) === null) setLocalData(DB_KEYS.STOCK, []);
+    if (getLocalData(DB_KEYS.USAGE) === null) setLocalData(DB_KEYS.USAGE, []);
+
+    // Eski deneme verilerini yerelden temizle
+    cleanDummyData();
 
     // Auto-connect to Firebase
     initFirebase();
@@ -281,13 +285,39 @@ function showToast(message, type) {
 function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
 function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
+// ===== Mobile Sidebar Toggle =====
+function toggleSidebar() {
+    var sidebar = document.getElementById('sidebar');
+    var backdrop = document.getElementById('sidebarBackdrop');
+    if (!sidebar) return;
+    sidebar.classList.toggle('active');
+    if (backdrop) {
+        backdrop.classList.toggle('active', sidebar.classList.contains('active'));
+    }
+}
+
+function closeSidebar() {
+    var sidebar = document.getElementById('sidebar');
+    var backdrop = document.getElementById('sidebarBackdrop');
+    if (sidebar) sidebar.classList.remove('active');
+    if (backdrop) backdrop.classList.remove('active');
+}
+
 // ===== Navigation =====
 function switchPage(pageName) {
     document.querySelectorAll('.page-content').forEach(function(p) { p.classList.add('hidden'); });
-    document.getElementById('page-' + pageName).classList.remove('hidden');
+    var target = document.getElementById('page-' + pageName);
+    if (target) target.classList.remove('hidden');
+
     document.querySelectorAll('.nav-item').forEach(function(item) {
         item.classList.toggle('active', item.dataset.page === pageName);
     });
+    document.querySelectorAll('.mobile-nav-item').forEach(function(item) {
+        item.classList.toggle('active', item.dataset.page === pageName);
+    });
+
+    closeSidebar();
+
     var titles = {
         dashboard: { title: 'Ana Sayfa', subtitle: 'Stok durumunuza genel bakış' },
         stock: { title: 'Stok Yönetimi', subtitle: 'Ürünlerinizi yönetin' },
@@ -296,8 +326,10 @@ function switchPage(pageName) {
         reports: { title: 'Raporlar', subtitle: 'Stok ve kullanım raporları' }
     };
     var t = titles[pageName];
-    document.getElementById('pageTitle').textContent = t.title;
-    document.getElementById('pageSubtitle').textContent = t.subtitle;
+    if (t) {
+        document.getElementById('pageTitle').textContent = t.title;
+        document.getElementById('pageSubtitle').textContent = t.subtitle;
+    }
     if (pageName === 'dashboard') refreshDashboard();
     if (pageName === 'stock') refreshStockTable();
     if (pageName === 'usage') refreshUsageTable();
@@ -664,7 +696,7 @@ function exportUsageHistory() {
     });
     var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     var a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-    a.download = 'AntalyaSmileDesign_KullanimGecmisi_' + new Date().toISOString().split('T')[0] + '.csv';
+    a.download = 'AntalyaSmileDental_KullanimGecmisi_' + new Date().toISOString().split('T')[0] + '.csv';
     a.click(); URL.revokeObjectURL(a.href);
     showToast('Kullanım geçmişi dışa aktarıldı', 'success');
 }
@@ -788,12 +820,19 @@ function setupGlobalSearch() {
 
 // ===== Sidebar =====
 function setupSidebar() {
-    document.getElementById('sidebarToggle').addEventListener('click', function() { document.getElementById('sidebar').classList.toggle('active'); });
+    var toggle = document.getElementById('sidebarToggle');
+    if (toggle) toggle.addEventListener('click', toggleSidebar);
+
+    var mobileToggle = document.getElementById('mobileToggleBtn');
+    if (mobileToggle) mobileToggle.addEventListener('click', toggleSidebar);
+
+    var backdrop = document.getElementById('sidebarBackdrop');
+    if (backdrop) backdrop.addEventListener('click', closeSidebar);
+
     document.querySelectorAll('.nav-item').forEach(function(item) {
         item.addEventListener('click', function(e) {
             e.preventDefault();
             switchPage(item.dataset.page);
-            if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('active');
         });
     });
 }

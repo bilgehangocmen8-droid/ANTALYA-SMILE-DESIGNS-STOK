@@ -75,14 +75,20 @@
             </button>
         </div>
     </nav>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
     <!-- Main Content -->
     <main class="main-content" id="mainContent">
         <!-- Top Bar -->
         <header class="top-bar">
-            <div class="page-title-section">
-                <h1 class="page-title" id="pageTitle">Ana Sayfa</h1>
-                <p class="page-subtitle" id="pageSubtitle">Stok durumunuza genel bakış</p>
+            <div class="top-bar-left">
+                <button class="mobile-toggle-btn" id="mobileToggleBtn" aria-label="Menü">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="page-title-section">
+                    <h1 class="page-title" id="pageTitle">Ana Sayfa</h1>
+                    <p class="page-subtitle" id="pageSubtitle">Stok durumunuza genel bakış</p>
+                </div>
             </div>
             <div class="top-bar-actions">
                 <div class="search-box">
@@ -640,6 +646,30 @@
         <i class="fas fa-cloud"></i>
         <span>Çevrimdışı</span>
     </div>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-bottom-nav" id="mobileBottomNav">
+        <a href="#" class="mobile-nav-item active" data-page="dashboard" onclick="switchPage('dashboard'); return false;">
+            <i class="fas fa-chart-pie"></i>
+            <span>Ana Sayfa</span>
+        </a>
+        <a href="#" class="mobile-nav-item" data-page="stock" onclick="switchPage('stock'); return false;">
+            <i class="fas fa-boxes-stacked"></i>
+            <span>Stok</span>
+        </a>
+        <a href="#" class="mobile-nav-item" data-page="usage" onclick="switchPage('usage'); return false;">
+            <i class="fas fa-clock-rotate-left"></i>
+            <span>Kullanım</span>
+        </a>
+        <a href="#" class="mobile-nav-item" data-page="categories" onclick="switchPage('categories'); return false;">
+            <i class="fas fa-tags"></i>
+            <span>Kategori</span>
+        </a>
+        <a href="#" class="mobile-nav-item" data-page="reports" onclick="switchPage('reports'); return false;">
+            <i class="fas fa-file-lines"></i>
+            <span>Rapor</span>
+        </a>
+    </nav>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
