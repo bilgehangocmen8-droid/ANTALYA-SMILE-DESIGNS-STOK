@@ -1,4 +1,4 @@
-// ===== Antalya Smile Design - Stok Yönetim Sistemi =====
+// ===== Antalya Smile Dental - Stok Yönetim Sistemi =====
 // ===== Firebase Realtime Database + LocalStorage =====
 
 const FIREBASE_CONFIG = {
