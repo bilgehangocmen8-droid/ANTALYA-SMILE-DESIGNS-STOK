@@ -1621,21 +1621,7 @@ select:focus, input[type="date"]:focus, input[type="time"]:focus {
 
 /* ===== Sync Status Indicator ===== */
 .sync-status {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: var(--gray-700);
-    color: var(--white);
-    padding: 8px 16px;
-    border-radius: 25px;
-    font-size: 12px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    z-index: 3000;
-    box-shadow: var(--shadow-lg);
-    transition: var(--transition);
+    display: none !important;
 }
 
 .sync-status.online {

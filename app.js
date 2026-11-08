@@ -51,18 +51,7 @@ function generateId(prefix) {
 
 // ===== Sync Status =====
 function updateSyncStatus(status) {
-    const el = document.getElementById('syncStatus');
-    if (!el) return;
-    if (status === 'online') {
-        el.className = 'sync-status online';
-        el.innerHTML = '<i class="fas fa-cloud"></i><span>Çevrimiçi - Senkronize</span>';
-    } else if (status === 'syncing') {
-        el.className = 'sync-status syncing';
-        el.innerHTML = '<i class="fas fa-sync"></i><span>Senkronize ediliyor...</span>';
-    } else {
-        el.className = 'sync-status offline';
-        el.innerHTML = '<i class="fas fa-cloud"></i><span>Çevrimdışı - Yerel</span>';
-    }
+    // Rozet kaldırıldı - senkronizasyon arka planda sessizce çalışır
 }
 
 // ===== Local Data =====
