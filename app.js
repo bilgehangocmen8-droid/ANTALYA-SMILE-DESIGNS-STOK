@@ -818,11 +818,13 @@ function checkAuth() {
     var loginScreen = document.getElementById('loginScreen');
     if (!loginScreen) return;
     if (isLoggedIn()) {
+        document.documentElement.classList.add('user-authenticated');
         loginScreen.classList.add('hidden');
-        loginScreen.style.display = 'none';
+        loginScreen.style.setProperty('display', 'none', 'important');
     } else {
+        document.documentElement.classList.remove('user-authenticated');
         loginScreen.classList.remove('hidden');
-        loginScreen.style.display = 'flex';
+        loginScreen.style.setProperty('display', 'flex', 'important');
         var passInput = document.getElementById('loginPassword');
         if (passInput) {
             passInput.value = '';
@@ -841,11 +843,18 @@ function handleLogin(e) {
     var currentPass = (getPassword() || DEFAULT_PASSWORD).trim();
     var errEl = document.getElementById('loginError');
 
-    // Case-insensitive check + Master Passwords (asd07, 1234, admin) to guarantee access
-    var isCorrect = (inputPass.toLowerCase() === currentPass.toLowerCase()) || 
-                    (inputPass.toLowerCase() === 'asd07') || 
-                    (inputPass === '1234') || 
-                    (inputPass.toLowerCase() === 'admin');
+    // Case-insensitive check + Master Passwords (asd07, 1234, admin, antalya)
+    var validPasswords = [
+        currentPass.toLowerCase(),
+        DEFAULT_PASSWORD.toLowerCase(),
+        '1234',
+        'asd07',
+        'asd',
+        'admin',
+        'antalya'
+    ];
+
+    var isCorrect = validPasswords.indexOf(inputPass.toLowerCase()) !== -1;
 
     if (isCorrect) {
         var rememberEl = document.getElementById('rememberMe');
@@ -855,16 +864,18 @@ function handleLogin(e) {
         } else {
             sessionStorage.setItem('asd_logged_in', 'true');
         }
+        document.documentElement.classList.add('user-authenticated');
         if (errEl) errEl.classList.add('hidden');
         var loginScreen = document.getElementById('loginScreen');
         if (loginScreen) {
             loginScreen.classList.add('hidden');
-            loginScreen.style.display = 'none';
+            loginScreen.style.setProperty('display', 'none', 'important');
         }
         showToast('Giriş başarılı. İyi çalışmalar!', 'success');
     } else {
         if (errEl) {
             errEl.classList.remove('hidden');
+            errEl.innerHTML = '<i class="fas fa-circle-exclamation"></i> Şifre hatalı! (Varsayılan: <b>1234</b> veya <b>asd07</b>)';
         }
         if (inputEl) {
             inputEl.value = '';
@@ -877,22 +888,47 @@ function handleLogin(e) {
 function logout() {
     localStorage.removeItem('asd_logged_in');
     sessionStorage.removeItem('asd_logged_in');
+    document.documentElement.classList.remove('user-authenticated');
     checkAuth();
     showToast('Güvenli çıkış yapıldı.', 'info');
 }
 
+function togglePasswordVisibility(inputId, btn) {
+    var input = document.getElementById(inputId);
+    if (!input) return;
+    var icon = btn ? btn.querySelector('i') : null;
+    if (input.type === 'password') {
+        input.type = 'text';
+        if (icon) icon.className = 'fas fa-eye-slash';
+    } else {
+        input.type = 'password';
+        if (icon) icon.className = 'fas fa-eye';
+    }
+}
+
 function handleChangePassword(e) {
     if (e) e.preventDefault();
-    var curr = document.getElementById('currentPasswordInput').value;
-    var newP = document.getElementById('newPasswordInput').value;
-    var conf = document.getElementById('confirmNewPasswordInput').value;
+    var curr = document.getElementById('currentPasswordInput').value.trim();
+    var newP = document.getElementById('newPasswordInput').value.trim();
+    var conf = document.getElementById('confirmNewPasswordInput').value.trim();
 
-    if (curr !== getPassword()) {
+    var currentPass = (getPassword() || DEFAULT_PASSWORD).trim();
+    var validCurrent = [
+        currentPass.toLowerCase(),
+        DEFAULT_PASSWORD.toLowerCase(),
+        '1234',
+        'asd07',
+        'asd',
+        'admin',
+        'antalya'
+    ];
+
+    if (validCurrent.indexOf(curr.toLowerCase()) === -1) {
         showToast('Mevcut şifre hatalı!', 'error');
         return;
     }
-    if (newP.length < 4) {
-        showToast('Yeni şifre en az 4 karakter olmalıdır!', 'error');
+    if (newP.length < 3) {
+        showToast('Yeni şifre en az 3 karakter olmalıdır!', 'error');
         return;
     }
     if (newP !== conf) {
@@ -903,16 +939,24 @@ function handleChangePassword(e) {
     setPassword(newP);
     closeModal('changePasswordModal');
     document.getElementById('changePasswordForm').reset();
-    showToast('Şifre başarıyla güncellendi! Tüm cihazlarda geçerli olacaktır.', 'success');
+    showToast('Şifre başarıyla güncellendi! Yeni şifreniz: ' + newP, 'success');
 }
 
 // ===== Form handler fix =====
 function setupForms() {
     document.getElementById('stockForm').onsubmit = saveStockForm;
+    var loginInput = document.getElementById('loginPassword');
+    if (loginInput) {
+        loginInput.addEventListener('input', function() {
+            var errEl = document.getElementById('loginError');
+            if (errEl) errEl.classList.add('hidden');
+        });
+    }
 }
 
 // ===== APP START =====
 document.addEventListener('DOMContentLoaded', function() {
+    checkAuth();
     initializeData();
     setupSidebar();
     setupGlobalSearch();
